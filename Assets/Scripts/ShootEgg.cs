@@ -9,14 +9,12 @@ public class ShootEgg : MonoBehaviour
     [SerializeField]
     private float shootSpeed;
 
-    // Update is called once per frame
-    void Update()
+    public void Shoot()
     {
-        if (Input.GetButtonDown("Fire1"))
-        {
-            var projectile= Instantiate(egg, transform.position, Quaternion.identity);
-            Rigidbody rb= projectile.GetComponent<Rigidbody>();
-            rb.AddForce(transform.forward * shootSpeed, ForceMode.Impulse);
-        }
+        var projectile = Instantiate(egg, transform.position, Quaternion.identity);
+        Rigidbody rb = projectile.GetComponent<Rigidbody>();
+        rb.AddForce(transform.forward * shootSpeed, ForceMode.Impulse);
+        
     }
+   
 }

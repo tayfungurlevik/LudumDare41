@@ -9,7 +9,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float rotationSpeed;
     //private Animator animator;
-    
+    [SerializeField]
+    private float allowedWalkedLengthPerTurn=10;
     private void Awake()
     {
         //animator = GetComponent<Animator>();
@@ -18,12 +19,17 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Move();
+        
+        if (allowedWalkedLengthPerTurn > 0)
+        {
+            Move();
+        }
+       
         Rotate();
     }
     private void Move()
     {
-        
+        allowedWalkedLengthPerTurn -= Time.deltaTime;
         var vertical = Input.GetAxis("Vertical");
 
         Vector3 moveVector = transform.forward * vertical;

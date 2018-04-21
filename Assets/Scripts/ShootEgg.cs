@@ -14,7 +14,7 @@ public class ShootEgg : MonoBehaviour
         var projectile = Instantiate(egg, transform.position, Quaternion.identity);
         Rigidbody rb = projectile.GetComponent<Rigidbody>();
         rb.AddForce(transform.forward * shootSpeed, ForceMode.Impulse);
-        
+        rb.AddTorque(new Vector3(0.5f, 0.7f, 0.42f), ForceMode.Impulse);
     }
    
 }

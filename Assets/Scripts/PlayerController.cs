@@ -22,12 +22,16 @@ public class PlayerController : MonoBehaviour,ITakeHit
     [SerializeField]
     private Cinemachine.CinemachineVirtualCamera virtualCameraThirdPerson;
     private float score = 0;
+    [SerializeField]
+    private float turnTime = 10;
+    private float playTimer=0;
     public static event Action<float> AddScore;
-
+   
 
     private void Awake()
     {
         initialWalkLength = allowedWalkedLengthPerTurn;
+        
         
     }
 
@@ -37,8 +41,13 @@ public class PlayerController : MonoBehaviour,ITakeHit
         
         if (HasTurn)
         {
-            
-            score += Time.deltaTime;
+            float time = Time.deltaTime;
+            playTimer += time;
+            score += time;
+            if (playTimer>=turnTime)
+            {
+                EndPlayerTurn();
+            }
             AddScore(score);
             //Debug.Log(score);
             bool canMove = CanMove();
@@ -60,18 +69,24 @@ public class PlayerController : MonoBehaviour,ITakeHit
             if (Input.GetButtonDown("Fire1"))
             {
                 shootEgg.Shoot();
-                virtualCameraThirdPerson.Priority = 1;
-                
-                StartCoroutine(GameManager.Instance.EndTurn(this));
-                allowedWalkedLengthPerTurn = initialWalkLength;
-                score = 0;
+                EndPlayerTurn();
             }
-            
+
 
         }
         
         
         
+    }
+
+    private void EndPlayerTurn()
+    {
+        virtualCameraThirdPerson.Priority = 1;
+
+        StartCoroutine(GameManager.Instance.EndTurn(this));
+        allowedWalkedLengthPerTurn = initialWalkLength;
+        score = 0;
+        playTimer = 0;
     }
 
     private bool CanMove()
@@ -83,12 +98,13 @@ public class PlayerController : MonoBehaviour,ITakeHit
     {
         
         var vertical = Input.GetAxis("Vertical");
-
+       
         Vector3 moveVector = transform.forward * vertical;
         if (moveVector.sqrMagnitude>0)
         {
             allowedWalkedLengthPerTurn -= Time.deltaTime;
         }
+        
         transform.position = transform.position + moveVector * moveSpeed * Time.deltaTime;
         
         

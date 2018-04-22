@@ -12,7 +12,7 @@ public class Enemy : MonoBehaviour,ITakeHit
     [SerializeField]
     private float allowedWalkedLengthPerTurn = 10;
     private PlayerController player;
-    private List<Enemy> enemies;
+    
     private GameObject target;
     [SerializeField]
     private ShootEgg shooter;
@@ -22,22 +22,33 @@ public class Enemy : MonoBehaviour,ITakeHit
     private NavMeshAgent agent;
     private float initialWalkLength;
     private float totalWalk;
+
+    public static event Action<int> HandleScore;
+
     private void Start()
     {
         gameObject.SetActive(true);
         target = null;
         player = GameManager.Instance.player;
-        enemies = GameManager.Instance.enemies.Where(t=>t.gameObject!=this.gameObject&&t.gameObject.activeSelf).ToList();
+        
         agent = GetComponent<NavMeshAgent>();
         agent.isStopped = true;
         initialWalkLength = allowedWalkedLengthPerTurn;
+       
+        
     }
 
     
 
+
+
     // Update is called once per frame
     void Update()
     {
+        if (GameManager.Instance.GameEnded)
+        {
+            return;
+        }
         if (HasTurn)
         {
             
@@ -95,22 +106,9 @@ public class Enemy : MonoBehaviour,ITakeHit
     private IEnumerator FindTheTarget()
     {
         
-        Enemy enemyWithLowestHealth = enemies.Where(t=>t.gameObject.activeSelf==true).OrderBy(t => t.Health).FirstOrDefault();
-        if (enemyWithLowestHealth!=null)
-        {
-            if (enemyWithLowestHealth.Health > player.Health || !enemyWithLowestHealth.gameObject.activeSelf)
-            {
+        
                 target = player.gameObject;
-            }
-            else
-            {
-                target = enemyWithLowestHealth.gameObject;
-            }
-        }
-        else
-        {
-            target = player.gameObject;
-        }
+          
         
 
         agent.SetDestination(target.transform.position);
@@ -121,6 +119,7 @@ public class Enemy : MonoBehaviour,ITakeHit
     public void TakeHit()
     {
         health--;
+        HandleScore(1);
         if (health<=0)
         {
             Die();

@@ -1,4 +1,7 @@
-﻿public interface ITakeHit
+﻿using System;
+
+public interface ITakeHit
 {
     void TakeHit();
+   
 }

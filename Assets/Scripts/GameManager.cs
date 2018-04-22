@@ -7,8 +7,14 @@ using System;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
+    public bool GameEnded { get; internal set; }
+
     public PlayerController player;
     public  List<Enemy> enemies;
+    [SerializeField]
+    private Transform[] spawnPoints;
+    [SerializeField]
+    private Enemy enemyPrefab;
     private void Awake()
     {
         Instance = this;
@@ -45,11 +51,28 @@ public class GameManager : MonoBehaviour
     {
         player.HasTurn = false;
         enemies.First().HasTurn = true;
+        SpawnNewEnemy();
         yield return new WaitForSeconds(2);
     }
+
+    private void SpawnNewEnemy()
+    {
+        int randomSpawnPoint=UnityEngine.Random.Range(0, spawnPoints.Length);
+        var enemy= Instantiate(enemyPrefab, spawnPoints[randomSpawnPoint].position,Quaternion.identity);
+        enemies.Add(enemy);
+    }
+
     // Update is called once per frame
     void Update()
     {
+        if (GameEnded)
+        {
+            ShowMenuPanel();
+        }
+    }
 
+    private void ShowMenuPanel()
+    {
+        throw new NotImplementedException();
     }
 }

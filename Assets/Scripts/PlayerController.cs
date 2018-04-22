@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour,ITakeHit
     [SerializeField]
     private float turnTime = 10;
     private float playTimer=0;
+    
     public static event Action<float> AddScore;
    
 

@@ -29,6 +29,13 @@ public class GameManager : MonoBehaviour
         StartGame();
 
     }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            SceneManager.LoadScene(0);
+        }
+    }
     private void OnDestroy()
     {
         PlayerController.OnDied -= PlayerController_OnDied;
@@ -83,11 +90,4 @@ public class GameManager : MonoBehaviour
         enemies.Add(enemy);
     }
 
-    
-
-   
-    public void RestartGame()
-    {
-
-    }
 }

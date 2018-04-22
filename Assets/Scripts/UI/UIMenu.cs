@@ -5,16 +5,24 @@ using UnityEngine.SceneManagement;
 
 public class UIMenu : MonoBehaviour
 {
-
-    public void LoadGame()
+    public void BeginGame()
     {
-       AsyncOperation operation= SceneManager.LoadSceneAsync(1,LoadSceneMode.Single);
-        operation.completed += Operation_completed;
+        StartCoroutine(LoadGame());
+    }
+    private IEnumerator LoadGame()
+    {
+        AsyncOperation operation = SceneManager.LoadSceneAsync(1, LoadSceneMode.Single);
+        while (!operation.isDone)
+        {
+            yield return null;
+        }
+
+    }
+    public void ExitGame()
+    {
+        Application.Quit();
     }
 
-    private void Operation_completed(AsyncOperation obj)
-    {
-        SceneManager.LoadScene(1);
-    }
-    
+
+
 }

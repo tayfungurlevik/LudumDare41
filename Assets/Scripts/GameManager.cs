@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Linq;
 using System;
 using Cinemachine;
-
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -23,10 +23,19 @@ public class GameManager : MonoBehaviour
     {
         Instance = this;
         player = FindObjectOfType<PlayerController>();
+        PlayerController.OnDied += PlayerController_OnDied;
         enemies = FindObjectsOfType<Enemy>().ToList();
         cinemachineTargetGroup = FindObjectOfType<CinemachineTargetGroup>();
         StartGame();
 
+    }
+    private void OnDestroy()
+    {
+        PlayerController.OnDied -= PlayerController_OnDied;
+    }
+    private void PlayerController_OnDied()
+    {
+        SceneManager.LoadScene(0);
     }
 
     private void StartGame()
@@ -74,20 +83,9 @@ public class GameManager : MonoBehaviour
         enemies.Add(enemy);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (GameEnded)
-        {
-            ShowMenuPanel();
-        }
-       
-    }
+    
 
-    private void ShowMenuPanel()
-    {
-        Debug.Log("Game Ended");
-    }
+   
     public void RestartGame()
     {
 

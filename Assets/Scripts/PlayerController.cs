@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour,ITakeHit
     private float playTimer=0;
     
     public static event Action<float> AddScore;
-   
+    public static event Action OnDied;
 
     private void Awake()
     {
@@ -131,5 +131,7 @@ public class PlayerController : MonoBehaviour,ITakeHit
     {
         GameManager.Instance.GameEnded = true;
         Destroy(gameObject);
+        OnDied();
+        
     }
 }

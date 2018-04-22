@@ -16,4 +16,5 @@ public class UIMenu : MonoBehaviour
     {
         SceneManager.LoadScene(1);
     }
+    
 }

@@ -17,7 +17,10 @@ public class UIScoreManager : MonoBehaviour
        // Enemy.HandleScore += Enemy_HandleScore;
         PlayerController.AddScore += PlayerController_AddScore;
     }
-
+    private void OnDisable()
+    {
+        PlayerController.AddScore -= PlayerController_AddScore;
+    }
     private void PlayerController_AddScore(float obj)
     {
         this.score += (int)obj;

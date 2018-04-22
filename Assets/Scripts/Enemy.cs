@@ -36,10 +36,7 @@ public class Enemy : MonoBehaviour, ITakeHit
         initialWalkLength = allowedWalkedLengthPerTurn;
     }
 
-    private void UIScoreManager_HandleScore(float obj)
-    {
-        throw new NotImplementedException();
-    }
+    
 
     // Update is called once per frame
     void Update()

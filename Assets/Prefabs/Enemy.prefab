@@ -38,7 +38,7 @@ GameObject:
   - component: {fileID: 135931651214129898}
   - component: {fileID: 195103663934081526}
   - component: {fileID: 114613127295072462}
-  - component: {fileID: 54334524885412874}
+  - component: {fileID: 54384351412526868}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -98,7 +98,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1351661935553398}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.616083, y: 0.0030673214, z: 34.355392}
+  m_LocalPosition: {x: -4.85, y: 0, z: 18.61}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_Children:
   - {fileID: 4316495179468996}
@@ -174,7 +174,7 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1670210363796400}
   m_Mesh: {fileID: 4300000, guid: 44235817a00b8c045b780fd5ca8a812d, type: 3}
---- !u!54 &54334524885412874
+--- !u!54 &54384351412526868
 Rigidbody:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -184,7 +184,7 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112

@@ -22,6 +22,7 @@ public class Enemy : MonoBehaviour, ITakeHit
     private NavMeshAgent agent;
     private float initialWalkLength;
     private float totalWalk;
+    private new Rigidbody rigidbody;
 
    // public static event Action<int> HandleScore;
 
@@ -30,7 +31,7 @@ public class Enemy : MonoBehaviour, ITakeHit
         gameObject.SetActive(true);
         target = null;
         player = GameManager.Instance.player;
-        
+        rigidbody = GetComponent<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
         agent.isStopped = true;
         initialWalkLength = allowedWalkedLengthPerTurn;
@@ -47,6 +48,7 @@ public class Enemy : MonoBehaviour, ITakeHit
         }
         if (HasTurn)
         {
+            rigidbody.isKinematic = false;
             agent.isStopped = true;
             StartCoroutine(FindTheTarget());
 
@@ -68,6 +70,7 @@ public class Enemy : MonoBehaviour, ITakeHit
         totalWalk = 0;
         transform.rotation = Quaternion.LookRotation(transform.position - target.transform.position);
         shooter.Shoot();
+        rigidbody.isKinematic = true;
         allowedWalkedLengthPerTurn = initialWalkLength;
         StartCoroutine(GameManager.Instance.NextTurn(this));
     }

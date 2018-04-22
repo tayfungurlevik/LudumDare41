@@ -25,14 +25,15 @@ public class PlayerController : MonoBehaviour,ITakeHit
     [SerializeField]
     private float turnTime = 10;
     private float playTimer=0;
-    
+    private new Rigidbody rigidbody;
     public static event Action<float> AddScore;
+    public static event Action OnDamage;
     public static event Action OnDied;
 
     private void Awake()
     {
         initialWalkLength = allowedWalkedLengthPerTurn;
-        
+        rigidbody = GetComponent<Rigidbody>();
         
     }
 
@@ -42,6 +43,7 @@ public class PlayerController : MonoBehaviour,ITakeHit
         
         if (HasTurn)
         {
+            rigidbody.isKinematic = false;
             float time = Time.deltaTime;
             playTimer += time;
             score += time;
@@ -88,6 +90,7 @@ public class PlayerController : MonoBehaviour,ITakeHit
         allowedWalkedLengthPerTurn = initialWalkLength;
         score = 0;
         playTimer = 0;
+        rigidbody.isKinematic = true;
     }
 
     private bool CanMove()
@@ -120,7 +123,7 @@ public class PlayerController : MonoBehaviour,ITakeHit
     public void TakeHit()
     {
         health--;
-        
+        OnDamage();
         if (health<=0)
         {
             Die();

@@ -21,8 +21,9 @@ public class PlayerController : MonoBehaviour,ITakeHit
     private float initialWalkLength;
     [SerializeField]
     private Cinemachine.CinemachineVirtualCamera virtualCameraThirdPerson;
+    private float score = 0;
+    public static event Action<float> AddScore;
 
-    
 
     private void Awake()
     {
@@ -36,6 +37,10 @@ public class PlayerController : MonoBehaviour,ITakeHit
         
         if (HasTurn)
         {
+            
+            score += Time.deltaTime;
+            AddScore(score);
+            //Debug.Log(score);
             bool canMove = CanMove();
             if (canMove)
             {
@@ -56,10 +61,12 @@ public class PlayerController : MonoBehaviour,ITakeHit
             {
                 shootEgg.Shoot();
                 virtualCameraThirdPerson.Priority = 1;
+                
                 StartCoroutine(GameManager.Instance.EndTurn(this));
                 allowedWalkedLengthPerTurn = initialWalkLength;
+                score = 0;
             }
-
+            
 
         }
         

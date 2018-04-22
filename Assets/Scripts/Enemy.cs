@@ -5,25 +5,25 @@ using UnityEngine.AI;
 using System.Linq;
 using System;
 
-public class Enemy : MonoBehaviour,ITakeHit
+public class Enemy : MonoBehaviour, ITakeHit
 {
     [SerializeField]
-    private int health=5;
+    private int health = 5;
     [SerializeField]
     private float allowedWalkedLengthPerTurn = 10;
     private PlayerController player;
-    
+
     private GameObject target;
     [SerializeField]
     private ShootEgg shooter;
     public int Health { get { return health; } }
-    
+
     public bool HasTurn { get; set; }
     private NavMeshAgent agent;
     private float initialWalkLength;
     private float totalWalk;
 
-    public static event Action<int> HandleScore;
+   // public static event Action<int> HandleScore;
 
     private void Start()
     {
@@ -34,13 +34,12 @@ public class Enemy : MonoBehaviour,ITakeHit
         agent = GetComponent<NavMeshAgent>();
         agent.isStopped = true;
         initialWalkLength = allowedWalkedLengthPerTurn;
-       
-        
     }
 
-    
-
-
+    private void UIScoreManager_HandleScore(float obj)
+    {
+        throw new NotImplementedException();
+    }
 
     // Update is called once per frame
     void Update()
@@ -51,12 +50,8 @@ public class Enemy : MonoBehaviour,ITakeHit
         }
         if (HasTurn)
         {
-            
-            
-                agent.isStopped = true;
-                StartCoroutine(FindTheTarget());
-            
-            
+            agent.isStopped = true;
+            StartCoroutine(FindTheTarget());
 
             if (CanMove())
             {
@@ -65,26 +60,16 @@ public class Enemy : MonoBehaviour,ITakeHit
             }
             else
             {
-                
                 AimAndShoot();
-
-                
-                
-                
-
             }
-
-            
         }
-        
-
     }
 
     private void AimAndShoot()
     {
         agent.isStopped = true;
         totalWalk = 0;
-        transform.rotation=Quaternion.LookRotation(transform.position - target.transform.position);
+        transform.rotation = Quaternion.LookRotation(transform.position - target.transform.position);
         shooter.Shoot();
         allowedWalkedLengthPerTurn = initialWalkLength;
         StartCoroutine(GameManager.Instance.NextTurn(this));
@@ -94,7 +79,7 @@ public class Enemy : MonoBehaviour,ITakeHit
     {
         agent.isStopped = false;
         totalWalk += Time.deltaTime;
-        
+
         agent.SetDestination(target.transform.position);
     }
 
@@ -105,12 +90,7 @@ public class Enemy : MonoBehaviour,ITakeHit
 
     private IEnumerator FindTheTarget()
     {
-        
-        
-                target = player.gameObject;
-          
-        
-
+        target = player.gameObject;
         agent.SetDestination(target.transform.position);
         agent.isStopped = false;
         yield return new WaitForSeconds(1);
@@ -119,8 +99,9 @@ public class Enemy : MonoBehaviour,ITakeHit
     public void TakeHit()
     {
         health--;
-        HandleScore(1);
-        if (health<=0)
+
+        //HandleScore(2);
+        if (health <= 0)
         {
             Die();
         }
@@ -130,6 +111,6 @@ public class Enemy : MonoBehaviour,ITakeHit
     {
         gameObject.SetActive(false);
         GameManager.Instance.enemies.Remove(this);
-        
+
     }
 }

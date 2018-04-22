@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System;
+using Cinemachine;
+
 
 public class GameManager : MonoBehaviour
 {
@@ -15,11 +17,14 @@ public class GameManager : MonoBehaviour
     private Transform[] spawnPoints;
     [SerializeField]
     private Enemy enemyPrefab;
+    private CinemachineTargetGroup cinemachineTargetGroup;
+    
     private void Awake()
     {
         Instance = this;
         player = FindObjectOfType<PlayerController>();
         enemies = FindObjectsOfType<Enemy>().ToList();
+        cinemachineTargetGroup = FindObjectOfType<CinemachineTargetGroup>();
         StartGame();
 
     }
@@ -59,6 +64,13 @@ public class GameManager : MonoBehaviour
     {
         int randomSpawnPoint=UnityEngine.Random.Range(0, spawnPoints.Length);
         var enemy= Instantiate(enemyPrefab, spawnPoints[randomSpawnPoint].position,Quaternion.identity);
+        var targets = cinemachineTargetGroup.m_Targets.ToList();
+        CinemachineTargetGroup.Target target = new CinemachineTargetGroup.Target();
+        target.target = enemy.transform;
+        target.weight = 1;
+        target.radius = 3;
+        targets.Add(target);
+        cinemachineTargetGroup.m_Targets = targets.ToArray();
         enemies.Add(enemy);
     }
 
@@ -69,10 +81,15 @@ public class GameManager : MonoBehaviour
         {
             ShowMenuPanel();
         }
+       
     }
 
     private void ShowMenuPanel()
     {
-        throw new NotImplementedException();
+        Debug.Log("Game Ended");
+    }
+    public void RestartGame()
+    {
+
     }
 }
